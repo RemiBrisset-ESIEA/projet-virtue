@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    container_name: platinium_backend
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: platinium_frontend
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+  db:
+    build: ./database
+    container_name: platinium_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: platinium
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+volumes:
+  db-data:
